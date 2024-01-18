@@ -7,6 +7,7 @@
 
 
 set(GAZEBO_SUPPORTED_MODELS "")
+list(APPEND GAZEBO_SUPPORTED_MODELS "ergocub_base_est")
 list(APPEND GAZEBO_SUPPORTED_MODELS "ergoCubGazeboV1")
 list(APPEND GAZEBO_SUPPORTED_MODELS "ergoCubGazeboV1_minContacts")
 list(APPEND GAZEBO_SUPPORTED_MODELS "ergoCubGazeboV1_1")
@@ -43,6 +44,10 @@ foreach(ROBOT_DIRNAME ${ROBOTS_NAMES})
   set(ROBOT_FEET_FIXED_MODEL_CONFIG_FILE "${ROBOT_FEET_FIXED_MODEL_FOLDER}/model.config")
   set(ROBOT_FEET_FIXED_MODEL_SDF_FILE "${ROBOT_FEET_FIXED_MODEL_FOLDER}/${ROBOT_NAME}_feet_fixed.sdf")
 
+  set(ROBOT_BASE_EST_MODEL_FOLDER "${CMAKE_BINARY_DIR}/${BUILD_PREFIX}/robots/${ROBOT_NAME}_base_est")
+  set(ROBOT_BASE_EST_MODEL_CONFIG_FILE "${ROBOT_BASE_EST_MODEL_FOLDER}/model.config")
+  set(ROBOT_BASE_EST_MODEL_SDF_FILE "${ROBOT_BASE_EST_MODEL_FOLDER}/${ROBOT_NAME}_base_est.sdf")
+
   list(APPEND INSTALLED_URDF_MODELS \"${ROBOT_NAME}\")
   # When copying in sources remove the _fixed models
   if(ROBOT_NAME IN_LIST GAZEBO_SUPPORTED_MODELS)
@@ -75,6 +80,18 @@ foreach(ROBOT_DIRNAME ${ROBOTS_NAMES})
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/feet_fixed_model.sdf.in
                    ${ROBOT_FEET_FIXED_MODEL_SDF_FILE}
                    @ONLY)
+
+    file(MAKE_DIRECTORY ${ROBOT_BASE_EST_MODEL_FOLDER})
+    set(ROBOT_NAME_CONFIG "${ROBOT_NAME}_base_est")
+    set(ROBOT_MODEL_CONFIG "${ROBOT_NAME}_base_est.sdf")
+    set(ROBOT_MODEL_DESCRIPTION_CONFIG "Model for the ergoCub humanoid robot, with basestate estimation")
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/model.config.in
+                  ${ROBOT_BASE_EST_MODEL_CONFIG_FILE}
+                  @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/baseest_model.sdf.in
+                ${ROBOT_BASE_EST_MODEL_SDF_FILE}
+                @ONLY)
+
   endif()
 endforeach()
 

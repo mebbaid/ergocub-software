@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<sdf version='@ERGOCUB_MODELS_SDF_VERSION@'>
+  <model name="ergocub_base_est">
+    <include>
+      <uri>model://@ROBOT_NAME@</uri>
+      <!-- Estimate base link pose and velocity -->
+      <plugin name="basestate" filename="libgazebo_yarp_basestate.so">
+            <yarpConfigurationFile>model://ergoCub/conf/gazebo_ergocub_basestate.ini</yarpConfigurationFile>
+      </plugin>
+      <!--plugin name='externalwrench' filename='libgazebo_yarp_externalwrench.so'>
+           <yarpConfigurationFile>model://ergoCub/conf/gazebo_icub_robotname.ini</yarpConfigurationFile>
+      </plugin-->
+    </include>
+   </model>
+</sdf>
